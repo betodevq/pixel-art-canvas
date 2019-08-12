@@ -26,6 +26,8 @@ var colorPersonalizado = document.getElementById('color-personalizado');
 var indicadorColor = document.getElementById('indicador-de-color');
 var botonBorrar = document.getElementById('borrar');
 var guardarImagen = document.getElementById('guardar');
+var indicadorColorTexto = document.getElementById('indicador-de-color-mensaje');
+
 //Funciones
 function generarPaletaColores() {
   for (let i = 0; i < nombreColores.length; i++) {
@@ -49,11 +51,13 @@ function personalizarColor() {
   colorActual = colorPersonalizado.value;
   // Completar para que cambie el indicador-de-color al colorActual
   indicadorColor.style.backgroundColor = colorActual;
+  indicadorColorTexto.textContent = colorActual;
 }
 
 function cambiarColor(e) { // cambia el color segun elección
   let bkgColor = e.target.style.backgroundColor;
   indicadorColor.style.backgroundColor = bkgColor;
+  indicadorColorTexto.textContent = bkgColor;
 }
 
 function dibujarPixel(e) { //dibujar pixel click por click
@@ -114,6 +118,7 @@ function elegirHeroe() {
 
 grillaPixeles.addEventListener("click", dibujarPixel); //Dibuja pixel por pixel
 paleta.addEventListener("click", cambiarColor); //Cambia el color en la paleta
+colorPersonalizado.addEventListener("change", personalizarColor);
 grillaPixeles.addEventListener("mouseup", mouseSuelto); 
 grillaPixeles.addEventListener("mousedown", mouseApretado);
 grillaPixeles.addEventListener("mouseover", moverMouse); //Dibuja arrastrando el click
