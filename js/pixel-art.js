@@ -21,11 +21,11 @@ var nombreColores = ['White', 'LightYellow',
 ];
 var paleta = document.getElementById('paleta');
 var grillaPixeles = document.getElementById('grilla-pixeles');
-// Variable para guardar el elemento 'color-personalizado'
-// Es decir, el que se elige con la rueda de color.
+var mouseClickeado; 
 var colorPersonalizado = document.getElementById('color-personalizado');
 var indicadorColor = document.getElementById('indicador-de-color');
 var botonBorrar = document.getElementById('borrar');
+var guardarImagen = document.getElementById('guardar');
 //Funciones
 function generarPaletaColores() {
   for (let i = 0; i < nombreColores.length; i++) {
@@ -34,66 +34,49 @@ function generarPaletaColores() {
     color.style.backgroundColor = nombreColores[i];
     paleta.appendChild(color);
   }
-};
+}
 
 function generarGrilla() {
   for (let i = 0; i < 1750; i++) {
     let casilla = document.createElement('div');
     grillaPixeles.appendChild(casilla);
   }
-};
+}
 
 //Eventos
-function colorPersonalizado() { //Color picker, permite elegir un color mas personalizado
+function personalizarColor() {
   // Se guarda el color de la rueda en colorActual
   colorActual = colorPersonalizado.value;
   // Completar para que cambie el indicador-de-color al colorActual
   indicadorColor.style.backgroundColor = colorActual;
 }
 
-colorPersonalizado.addEventListener('change', colorPersonalizado);
-
 function cambiarColor(e) { // cambia el color segun elección
   let bkgColor = e.target.style.backgroundColor;
   indicadorColor.style.backgroundColor = bkgColor;
-};
+}
 
-paleta.addEventListener("click", cambiarColor);
-
-function dibujarPixeles() { //dibujar click por click
-  grillaPixeles.addEventListener("click", function (e) {
-    let colorActual = indicadorColor.style.backgroundColor;
-    e.target.style.backgroundColor = colorActual;
-  });
-};
-
-dibujarPixeles();
+function dibujarPixel(e) { //dibujar pixel click por click
+  let colorActual = indicadorColor.style.backgroundColor;
+  e.target.style.backgroundColor = colorActual;
+}
 
 //proceso para hacer que pinte continuamente
-var mouseClickeado;
-
-function mouseApretado(e) {
+function mouseApretado() {
   mouseClickeado = true;
-  console.log('clickeaste el mouse ' + mouseClickeado);
-};
+}
 
-function mouseSuelto(e) {
+function mouseSuelto() {
   mouseClickeado = false;
-  console.log('soltaste el click ' + mouseClickeado);
-};
+}
 
 function moverMouse(e) {
   if (mouseClickeado) {
-    console.log(e.target.style.backgroundColor);
     e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
   }
-};
+}
 
-grillaPixeles.addEventListener("mouseup", mouseSuelto);
-grillaPixeles.addEventListener("mousedown", mouseApretado);
-grillaPixeles.addEventListener("mouseover", moverMouse);
-
-//Borrar la pantalla
+//Borrar la grilla
 function limpiarGrilla() {
   $(document).ready(function () {
     $grilla = $("#grilla-pixeles");
@@ -102,8 +85,6 @@ function limpiarGrilla() {
     }, 2500);
   });
 }
-
-botonBorrar.addEventListener("click", limpiarGrilla);
 
 function elegirHeroe() {
   $(document).ready(function () {
@@ -131,9 +112,14 @@ function elegirHeroe() {
 }
 
 
+grillaPixeles.addEventListener("click", dibujarPixel); //Dibuja pixel por pixel
+paleta.addEventListener("click", cambiarColor); //Cambia el color en la paleta
+grillaPixeles.addEventListener("mouseup", mouseSuelto); 
+grillaPixeles.addEventListener("mousedown", mouseApretado);
+grillaPixeles.addEventListener("mouseover", moverMouse); //Dibuja arrastrando el click
+botonBorrar.addEventListener("click", limpiarGrilla); //Borra el contenido de la grilla
+guardarImagen.addEventListener("click", guardarPixelArt);
 
-
-//llamado de funciones
 generarPaletaColores();
 generarGrilla();
 elegirHeroe();
