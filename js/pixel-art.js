@@ -21,7 +21,7 @@ var nombreColores = ['White', 'LightYellow',
 ];
 var paleta = document.getElementById('paleta');
 var grillaPixeles = document.getElementById('grilla-pixeles');
-var mouseClickeado; 
+var mouseClickeado;
 var colorPersonalizado = document.getElementById('color-personalizado');
 var indicadorColor = document.getElementById('indicador-de-color');
 var botonBorrar = document.getElementById('borrar');
@@ -45,19 +45,22 @@ function generarGrilla() {
   }
 }
 
+function cambiarIndicadorDeColor(color) {
+  indicadorColor.style.backgroundColor = color;
+  indicadorColorTexto.textContent = color;
+}
+
 //Eventos
-function personalizarColor() {
+function personalizarColor(e) { // cambiar el color desde el color picker
   // Se guarda el color de la rueda en colorActual
   colorActual = colorPersonalizado.value;
   // Completar para que cambie el indicador-de-color al colorActual
-  indicadorColor.style.backgroundColor = colorActual;
-  indicadorColorTexto.textContent = colorActual;
+  cambiarIndicadorDeColor(colorActual);
 }
 
-function cambiarColor(e) { // cambia el color segun elección
+function cambiarColor(e) { // cambia el color desde la paleta
   let bkgColor = e.target.style.backgroundColor;
-  indicadorColor.style.backgroundColor = bkgColor;
-  indicadorColorTexto.textContent = bkgColor;
+  cambiarIndicadorDeColor(bkgColor);
 }
 
 function dibujarPixel(e) { //dibujar pixel click por click
@@ -66,8 +69,14 @@ function dibujarPixel(e) { //dibujar pixel click por click
 }
 
 //proceso para hacer que pinte continuamente
-function mouseApretado() {
-  mouseClickeado = true;
+function mouseApretado(e) {
+    mouseClickeado = true;
+}
+
+function dibujarDrag(e){
+  if (mouseClickeado) {
+    e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
+  }
 }
 
 function mouseSuelto() {
@@ -79,6 +88,7 @@ function moverMouse(e) {
     e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
   }
 }
+
 
 //Borrar la grilla
 function limpiarGrilla() {
@@ -117,11 +127,13 @@ function elegirHeroe() {
 
 
 grillaPixeles.addEventListener("click", dibujarPixel); //Dibuja pixel por pixel
-paleta.addEventListener("click", cambiarColor); //Cambia el color en la paleta
-colorPersonalizado.addEventListener("change", personalizarColor);
-grillaPixeles.addEventListener("mouseup", mouseSuelto); 
+paleta.addEventListener("click", cambiarColor); //Cambia el color desde la paleta
+colorPersonalizado.addEventListener("change", personalizarColor); //Cambia el color desde el color picker
+grillaPixeles.addEventListener("mouseup", mouseSuelto);
 grillaPixeles.addEventListener("mousedown", mouseApretado);
 grillaPixeles.addEventListener("mouseover", moverMouse); //Dibuja arrastrando el click
+grillaPixeles.addEventListener("dragend", mouseSuelto); // Evita que se tranque el pincel al arrastrar
+grillaPixeles.addEventListener("mouseleave", mouseSuelto); //Evita que se tranque el mouse al salir de la grilla
 botonBorrar.addEventListener("click", limpiarGrilla); //Borra el contenido de la grilla
 guardarImagen.addEventListener("click", guardarPixelArt);
 
