@@ -73,12 +73,6 @@ function mouseApretado(e) {
     mouseClickeado = true;
 }
 
-function dibujarDrag(e){
-  if (mouseClickeado) {
-    e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
-  }
-}
-
 function mouseSuelto() {
   mouseClickeado = false;
 }
@@ -88,7 +82,6 @@ function moverMouse(e) {
     e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
   }
 }
-
 
 //Borrar la grilla
 function limpiarGrilla() {
@@ -124,7 +117,6 @@ function elegirHeroe() {
     });
   });
 }
-
 
 grillaPixeles.addEventListener("click", dibujarPixel); //Dibuja pixel por pixel
 paleta.addEventListener("click", cambiarColor); //Cambia el color desde la paleta
